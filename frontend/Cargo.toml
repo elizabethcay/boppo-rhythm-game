@@ -1,0 +1,28 @@
+[package]
+name = "rhythm_game"
+version = "0.1.0"
+edition = "2021"
+description = "Boppo rhythm-game activity (Rust -> WASM), built on the boppo_wasm crate."
+
+# lib: the device-independent game logic, unit-testable on the host target.
+# bin: the wasm activity itself (main.rs), which depends on boppo_wasm and only
+#      builds for wasm32-wasip1.
+[lib]
+name = "rhythm_game"
+path = "src/lib.rs"
+
+[[bin]]
+name = "rhythm_game"
+path = "src/main.rs"
+
+# boppo_wasm links the "host" import module and only makes sense on device, so
+# it's a wasm-only dependency. On the host target (cargo test) it's absent and
+# the bin's activity module is cfg'd out — main() is then a no-op.
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+boppo_wasm = "0.1"
+
+[profile.release]
+opt-level = "z"   # optimize for size (small binary; 32 KB stack budget)
+lto = true
+panic = "abort"   # no unwinding tables on device
+strip = true

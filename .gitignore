@@ -1,0 +1,28 @@
+# ── Rust / frontend ──────────────────────────────────────────
+# Build output (frontend/target and any nested target/)
+target/
+**/target/
+
+# ── Python / backend ─────────────────────────────────────────
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+build/
+
+# ── Generated bundles (compiled wasm + re-encoded audio) ─────
+# dist/ holds device-format song audio (copyrighted) and generated
+# wasm/rs — never commit it.
+dist/
+**/dist/
+
+# ── OS / editor cruft ────────────────────────────────────────
+.DS_Store
+*.swp
+*~
+.idea/
+.vscode/

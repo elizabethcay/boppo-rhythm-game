@@ -1,0 +1,26 @@
+[project]
+name = "boppo-chart"
+version = "0.1.0"
+description = "Offline chart-generation pipeline for the Boppo rhythm game."
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "librosa>=0.10,<0.12",
+    "numpy>=1.24",
+    "soundfile>=0.12",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+boppo-chart = "boppo_chart.cli:main"
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["boppo_chart"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

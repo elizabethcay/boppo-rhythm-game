@@ -1,0 +1,3 @@
+/target
+# Cargo.lock is committed: the activity is an application, so pinning exact
+# dependency versions (incl. boppo_wasm) keeps builds reproducible.
