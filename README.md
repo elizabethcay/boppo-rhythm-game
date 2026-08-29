@@ -1,8 +1,8 @@
 # Boppo Rhythm Game
 
 A Japanese-rhythm-game-style activity for the [Boppo](https://boppo.com) — a
-screen-free kids' tablet with 10 light-up mechanical buttons (2 rows of 5), a
-speaker, and no screen. Upload a song and it generates a beat chart: the **top
+screen-free kids' tablet with 10 light-up mechanical buttons (2 rows of 5) and a
+speaker. Upload a song and it generates a beat chart: the **top
 row** previews notes as they approach, and you press the matching **bottom-row**
 button in time with the music.
 
