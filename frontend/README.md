@@ -18,13 +18,19 @@ Two layers, split by testability:
 `init_and_run_async` re-runs the activity each time it returns, which is exactly
 "back to the menu":
 
-    menu (one song per button)  →  play (the chart)  →  results  →  return
+    menu (announce → confirm)  →  countdown  →  play (the chart)  →  results  →  return
 
-The menu lights one button per song in a distinct hue; pressing a lit button
-plays that song. Caps at the 10 physical buttons.
+- **Menu** — one lit button per song, distinct hue, capped at the 10 buttons.
+  It's *announce-then-confirm*: the first press on a song speaks its name clip and
+  highlights it (others dim); a second press on that song plays it; pressing a
+  different song announces that one instead.
+- **Countdown** — the whole grid flashes red → orange → green ("get ready") so
+  gameplay doesn't start abruptly; presses during it are discarded.
+- **Play / results** — the chart runs, then the bottom row flashes green/red by
+  accuracy before returning to the menu.
 
 ### Module map (lib)
-- `song.rs` — `Song { id, audio_file, chart }` + the compiled-in `SONGS` library.
+- `song.rs` — `Song { id, name_audio, audio_file, chart }` + the compiled-in `SONGS`.
 - `lane.rs` — per-lane state machine (Idle → Preview → Armed → resolved). Preview
   and early-click feedback are independent tracks; input never cancels a preview.
 - `game.rs` — `GameState`: `tick(now_ms)`, `judge(button, now_ms)`,

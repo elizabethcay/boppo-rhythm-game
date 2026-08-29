@@ -8,17 +8,22 @@ song(s) in ─▶ onset/beat analysis ─▶ lane assignment ─▶ charts
    (librosa)        │                                    + songs_generated.rs (Rust SONGS)
                     └─▶ re-encode ─▶ songs/<id>.wav|.qoa  (16-bit / 48 kHz / mono)
 ```
-Multiple songs compile into one activity; the player picks one from the button
-menu on the device.
+Multiple songs compile into one activity; on the device the player browses the
+button menu — press once to hear a song's name, again to play it. See
+[Adding your own songs](#adding-your-own-songs) and
+[Custom name voices](#custom-name-voices-announce-then-confirm-menu).
 
 ## Layout
-- `boppo_chart/analysis.py` — onset detection, spectral centroid, BPM (librosa).
-- `boppo_chart/lanes.py` — onset → lane assignment (pure; `freq` / `round_robin`) + thinning.
+- `boppo_chart/analysis.py` — onset/beat detection, spectral centroid, BPM (librosa).
+- `boppo_chart/lanes.py` — note placement (beat-synced or onset) + lane assignment.
+- `boppo_chart/difficulty.py` — easy/normal/hard pacing presets.
 - `boppo_chart/chart.py` — `Chart`/`Note` model + JSON (matches the handoff schema).
-- `boppo_chart/codegen.py` — songs → `songs_generated.rs` (`SONGS`) for the frontend.
 - `boppo_chart/audio.py` — ffmpeg re-encode to device format (WAV; QOA if `qoaconv` present).
+- `boppo_chart/voice.py` — spoken song-name clips (macOS `say`, for the menu).
+- `boppo_chart/codegen.py` — songs → `songs_generated.rs` (`SONGS`) for the frontend.
+- `boppo_chart/pipeline.py` — ties analysis → assets → compiled activity together.
 - `boppo_chart/upload.py` — push `.wasm` + audio to a tablet over its HTTPS API.
-- `boppo_chart/cli.py` — `build` and `upload` subcommands.
+- `boppo_chart/cli.py` — `build`, `bundle`, `upload`, `launch` subcommands.
 
 The pure logic (`lanes`, `chart`, `codegen`) has no third-party deps, so its tests
 run without the audio stack.
@@ -49,8 +54,9 @@ dist/<name>/
 └── charts/<id>.chart.json  # portable charts
 ```
 One input works too. Options: `--difficulty easy|normal|hard` (default normal),
+`--sync beat|onset` (default beat), `--name-audio ID=PATH` (custom name voices),
 `--lanes freq|round_robin`, `--name`, `--format wav|qoa`, `--frontend PATH`,
-`--cargo PATH`, `--upload SERIAL`.
+`--cargo PATH`, `--upload SERIAL`, `--launch`.
 
 ### Difficulty
 `--difficulty` sets the pacing for young players — same notes on all 5 lanes,
@@ -67,6 +73,43 @@ rest still come from the preset. Slower, simpler songs also help a lot.
 ```bash
 .venv/bin/python -m boppo_chart bundle song.mp3 --name kids --difficulty easy --upload <SERIAL>
 ```
+
+### Note placement (`--sync`)
+By default notes snap to the song's **beat grid** (`--sync beat`) so they track the
+music. `--sync onset` places them on raw transients instead — busier and can feel
+off-beat; usually leave it on `beat`.
+
+## Adding your own songs
+
+Pass any audio files (mp3/wav/flac/m4a/…) to `bundle` — one menu button per song,
+filling left→right, top row first (B0, B1, …), capped at 10 songs:
+```bash
+.venv/bin/python -m boppo_chart bundle golden.mp3 "choosin texas.mp3" \
+  --name kids --difficulty easy --upload <SERIAL> --launch
+```
+Each song's **id** is the slug of its filename (`golden.mp3` → `golden`,
+`choosin texas.mp3` → `choosin-texas`). Ids matter for the name-voice mapping
+below and for the on-device menu order.
+
+## Custom name voices (announce-then-confirm menu)
+
+On the menu, the **first press** on a song speaks its name; a **second press**
+plays it. By default the name is synthesized with macOS `say` (spoken text = the
+song id). To use **your own recording — or an AI-generated voice clip** — map an
+audio file to a song id with `--name-audio ID=PATH` (repeatable; any audio format,
+re-encoded to device format automatically):
+```bash
+.venv/bin/python -m boppo_chart bundle golden.mp3 "choosin texas.mp3" \
+  --name kids --difficulty easy \
+  --name-audio "golden=~/Desktop/Golden-name.mp3" \
+  --name-audio "choosin-texas=~/Downloads/Choosin-Texas-name.mp3" \
+  --upload <SERIAL> --launch
+```
+- Any song **without** a `--name-audio` falls back to TTS.
+- Not sure of an id? Run `build` once and look at the filenames in
+  `dist/<name>/charts/` (e.g. `golden.chart.json` → id `golden`).
+- Clips are re-encoded to 16-bit/48 kHz/mono like songs, so AI-generated mp3/wav
+  files work directly — no manual conversion needed.
 
 ### Charts only (no compile)
 ```bash
@@ -113,7 +156,7 @@ the same LAN.
 User activities do **not** take one of the built-in arcade menu slots — you start
 them by name via the always-available `start` command (no Developer Mode):
 ```bash
-.venv/bin/python -m boppo_chart launch <SERIAL>            # start rhythm-game
+.venv/bin/python -m boppo_chart launch <SERIAL>            # starts rhythm_game
 ```
 Or bundle + upload + launch in one shot:
 ```bash

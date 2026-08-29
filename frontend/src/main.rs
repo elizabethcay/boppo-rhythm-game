@@ -77,12 +77,10 @@ mod activity {
             }
 
             if focused == Some(idx) {
-                // Second consecutive press on the focused song -> play it.
                 audio::stop_all();
                 return idx;
             }
 
-            // First press on this song -> announce its name and highlight it.
             focused = Some(idx);
             audio::stop_all();
             audio::play(SONGS[idx].name_audio);
