@@ -1,4 +1,4 @@
-# Boppo Rhythm Game — Frontend (Rust → WASM)
+# Boppo Rhythm Game — Frontend 
 
 The on-device activity: game loop, LED rendering, input judging, scoring. Built on
 the official [`boppo_wasm`](https://crates.io/crates/boppo_wasm) crate.
