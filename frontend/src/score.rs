@@ -1,5 +1,5 @@
-//! Scoring + combo tracking. Values are placeholders pending product sign-off
-//! (handoff section 6) — kept in one place so they're easy to tune.
+//! Scoring + combo tracking. Point values are kept in one place so they're easy
+//! to tune.
 
 /// Points awarded per clean hit.
 pub const HIT_POINTS: u32 = 100;

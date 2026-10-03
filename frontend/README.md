@@ -47,7 +47,7 @@ from `Instant` every frame and passes `now_ms` into `GameState`, so frame-pacing
 jitter never affects judging. A fixed `AUDIO_OFFSET_MS` in `main.rs` corrects for
 audio-start latency (wire it to a calibration screen later).
 
-## Verified platform facts (developer.boppo.com + crate sources, 2026-08-24)
+## Platform facts
 - WASM stack **32 KB**: no recursion, no large stack arrays. (Binary *size* is a
   separate budget; the 103 KB artifact works.)
 - WASIp1 **filesystem APIs unavailable** → charts compiled in, not read from disk.

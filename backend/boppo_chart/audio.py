@@ -3,7 +3,7 @@
 Boppo outputs 16-bit / 48 kHz / mono. We standardize every song to that so
 playback needs no resample/downmix on the ESP32-S3.
 
-Format choice (verified against the Audio Formats doc + the boppo_wasm crate):
+Format choice:
 * ``qoa`` is preferred for timing-critical playback — no start/end padding, tiny
   decode cost. It requires an external encoder (`qoaconv` from the QOA reference
   repo); we shell out to it when present.

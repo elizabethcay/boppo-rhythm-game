@@ -1,8 +1,8 @@
 """Push files to a Boppo tablet over its local HTTPS API.
 
-Mirrors the handoff's curl flow (section 3.5). The device uses a self-signed
-cert (hence `-k`/no-verify) and is reachable at `boppo-<SERIAL>.local` over mDNS
-on the same LAN. Pairing prompts for physical approval on the tablet.
+The device uses a self-signed cert (hence `-k`/no-verify) and is reachable at
+`boppo-<SERIAL>.local` over mDNS on the same LAN. Pairing prompts for physical
+approval on the tablet.
 
 Uploads under `/sd/activities/user/` and `/sd/config/user/` need no Developer
 Mode. These functions talk to real hardware — they are not exercised in tests.

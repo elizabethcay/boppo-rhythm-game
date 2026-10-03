@@ -1,6 +1,6 @@
 """Chart data model + JSON (de)serialization.
 
-Matches the handoff schema (section 3) and the frontend's `Chart`/`Note` types:
+The JSON schema, shared with the frontend's `Chart`/`Note` types:
 
     {
       "song_id": "string",

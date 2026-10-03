@@ -17,7 +17,7 @@ button menu and presses once to hear a song's name, then again to play it. See
 - `boppo_chart/analysis.py`:  onset/beat detection, spectral centroid, BPM (librosa).
 - `boppo_chart/lanes.py`:  note placement (beat-synced or onset) + lane assignment.
 - `boppo_chart/difficulty.py`: easy/normal/hard pacing presets.
-- `boppo_chart/chart.py`: `Chart`/`Note` model + JSON (matches the handoff schema).
+- `boppo_chart/chart.py`: `Chart`/`Note` model + JSON (the shared chart schema).
 - `boppo_chart/audio.py`: ffmpeg re-encode to device format (WAV; QOA if `qoaconv` present).
 - `boppo_chart/voice.py`: spoken song-name clips (macOS `say`, for the menu).
 - `boppo_chart/codegen.py`: songs → `songs_generated.rs` (`SONGS`) for the frontend.

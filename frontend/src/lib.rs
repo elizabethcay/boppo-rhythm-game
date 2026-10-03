@@ -7,15 +7,12 @@
 //!
 //! The device glue — the async event/audio/LED loop and the audio clock — lives
 //! in `main.rs`, built on `boppo_wasm` and compiled only for wasm. Time is read
-//! there from `std::time::Instant` (the runtime's monotonic clock, which the
-//! boppo_wasm embassy-time driver is itself built on) and passed into
-//! [`game::GameState`] as a plain `now_ms`, so the logic never needs a clock.
+//! there from `std::time::Instant` and passed into [`game::GameState`] as a plain
+//! `now_ms`, so the logic never needs a clock.
 //!
-//! Verified against developer.boppo.com + the boppo_core/boppo_wasm sources
-//! (2026-08-24):
-//!   * WASM stack is 32 KB — no recursion, no large stack arrays.
-//!   * WASIp1 filesystem APIs unavailable -> chart compiled in as a `&[Note]`.
-//!   * `std::time::Instant` works on device -> real monotonic clock, no drift.
+//! Platform constraints the design works within:
+//!   * 32 KB WASM stack — no recursion, no large stack arrays.
+//!   * No WASIp1 filesystem — the chart is compiled in as a `&[Note]`.
 //!   * Lights are Button-ordered (B0..B9), 4 per button (top/left/right/bottom).
 
 pub mod chart;

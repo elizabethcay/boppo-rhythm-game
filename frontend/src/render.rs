@@ -4,8 +4,7 @@
 //! and the game composes a per-button color array. `main.rs` converts those to
 //! `boppo_core::color::RGB` and lets `boppo_core` own the button->light mapping
 //! (Button-ordered, 4 lights each), so there's a single source of truth for the
-//! LED layout. The lane<->button helpers below match that layout (verified
-//! against the button-layout doc and boppo_core's `Lights` ordering, 2026-08-24).
+//! LED layout. The lane<->button helpers below match that layout.
 
 pub type Rgb = (u8, u8, u8);
 

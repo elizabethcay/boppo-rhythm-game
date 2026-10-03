@@ -1,10 +1,9 @@
-//! Per-lane state machine (handoff section 4).
+//! Per-lane state machine.
 //!
 //! Each of the 5 lanes runs an independent instance — lanes can be in different
-//! states at once, which is how chords render. The key correction from the
-//! handoff: a premature press does NOT cancel the preview. The preview ramp and
-//! the early-click feedback are on independent tracks; only the clock moves a
-//! lane from Preview into Armed, never input.
+//! states at once, which is how chords render. A premature press does NOT cancel
+//! the preview: the preview ramp and the early-click feedback are independent
+//! tracks, and only the clock moves a lane from Preview into Armed, never input.
 //!
 //! So a lane has two layers:
 //!   * `phase`  — Idle / Preview / Armed, driven only by the clock.
@@ -13,7 +12,7 @@
 
 use crate::render::{self, Rgb};
 
-/// How long hit/miss/early flashes stay lit (handoff ~150–200ms).
+/// How long hit/miss/early flashes stay lit.
 pub const FLASH_MS: u32 = 150;
 
 /// Clock-driven layer.

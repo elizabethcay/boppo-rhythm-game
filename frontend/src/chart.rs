@@ -1,11 +1,9 @@
 //! Beat chart: what to play and when.
 //!
 //! Chart data is compiled in as a `&'static [Note]` const rather than parsed at
-//! runtime — WASIp1 filesystem APIs are unavailable (verified 2026-08-24) and a
-//! `&[Note]` const needs no parser, keeping the binary small and the stack budget
-//! intact. The backend codegen step will emit exactly this shape (a generated
-//! `chart_data.rs` with a `NOTES` const), which is why the fields are plain and
-//! ordered by `hit_time_ms`.
+//! runtime: the device has no filesystem, and a const needs no parser, which
+//! keeps the binary small. The backend emits exactly this shape, so the fields
+//! are plain and ordered by `hit_time_ms`.
 
 /// One note: press `lane` at `hit_time_ms`.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

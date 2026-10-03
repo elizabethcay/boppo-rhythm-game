@@ -143,8 +143,8 @@ mod activity {
         flush_colors(&game.button_colors(now));
     }
 
-    /// Placeholder results screen: light the bottom row green/red by accuracy for
-    /// a moment so the run visibly ends. TODO: real accuracy / max-combo display.
+    /// Results screen: light the bottom row green or red by accuracy for a moment
+    /// before returning to the menu.
     async fn show_results(game: &GameState) {
         let s = game.score();
         let c = if s.accuracy() >= 0.5 { color::GREEN } else { color::RED };
