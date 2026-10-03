@@ -1,11 +1,12 @@
 # Boppo Rhythm Game
 
-A Japanese-rhythm-game-style activity for the [Boppo](https://boppo.com) — a
-screen-free kids' tablet with 10 light-up mechanical buttons (2 rows of 5) and a
+A Japanese-rhythm-game-style activity for the [Boppo](https://boppo.com). Includes
+10 light-up mechanical buttons (2 rows of 5) and a 
 speaker. Upload a song and it generates a beat chart: the **top
 row** previews notes as they approach, and you press the matching **bottom-row**
 button in time with the music.
 
+<img width="1590" height="1304" alt="Boppo Game" src="https://github.com/user-attachments/assets/168b5e45-9a12-4723-b9ea-d0efba264a82" />
 It's built as two fully decoupled parts:
 
 | | What it is | Runs on |
@@ -19,12 +20,12 @@ It's built as two fully decoupled parts:
 song menu  →  countdown  →  play  →  results  →  (back to menu)
 ```
 
-- **Menu** — one lit button per song. Press once to **hear the song's name**
+- **Menu**: one lit button per song. Press once to **hear the song's name**
   (announce), press again to **play** it. A different button announces that one.
-- **Countdown** — the grid flashes red → orange → green ("get ready").
-- **Play** — notes fade in on the top row; press the button below in time.
+- **Countdown**: the grid flashes red → orange → green ("get ready").
+- **Play**: notes fade in on the top row; press the button below in time.
   Green = hit, red = miss.
-- **Results** — a quick green/red flash, then back to the menu.
+- **Results**: a quick green flash to indicate >50% hit accuracy, and red for <50% accuracy, then back to menu.
 
 ## Quick start
 
@@ -43,21 +44,21 @@ python3.11 -m venv .venv
 ```
 
 `bundle` analyzes each song, compiles a single WASM activity with every chart
-baked in, uploads it to the tablet, and launches it. Add your own recorded or
-AI-generated **name voices** with `--name-audio`, tune pacing with
+baked in, uploads it to the tablet, and launches it. Add your own recordings to introduce song titles or
+AI-generated voices with `--name-audio`, tune pacing with
 `--difficulty easy|normal|hard`, and more — see [`backend/README.md`](backend/README.md).
 
 ## More docs
 
-- [`backend/README.md`](backend/README.md) — the chart pipeline: adding songs,
+- [`backend/README.md`](backend/README.md) —> the chart pipeline: adding songs,
   custom name voices, difficulty, audio format, uploading and launching.
-- [`frontend/README.md`](frontend/README.md) — the on-device activity:
+- [`frontend/README.md`](frontend/README.md) —> the on-device activity:
   architecture, the menu/gameplay flow, timing, and building for the device.
 
 ## Notes
 
-- **No screen** — everything is buttons, LEDs, the speaker, and voice prompts.
+- **No screen**: everything is buttons, LEDs, the speaker, and voice prompts.
 - The game logic is device-independent and unit-tested (`cargo test` /
   `pytest`); only thin I/O layers touch the hardware.
 - The device has no runtime filesystem, so each song's chart is *compiled into*
-  the activity — "uploading a song" means bundling and compiling it in.
+  the activity. "Uploading a song" means bundling and compiling it in.
