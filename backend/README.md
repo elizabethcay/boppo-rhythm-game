@@ -1,4 +1,4 @@
-# Boppo Rhythm Game — Backend (chart pipeline)
+# Boppo Rhythm Game — Backend 
 
 Turns a song into a playable chart + a device-format audio file, entirely offline
 on a computer. Never runs on the tablet.
@@ -9,21 +9,21 @@ song(s) in ─▶ onset/beat analysis ─▶ lane assignment ─▶ charts
                     └─▶ re-encode ─▶ songs/<id>.wav|.qoa  (16-bit / 48 kHz / mono)
 ```
 Multiple songs compile into one activity; on the device the player browses the
-button menu — press once to hear a song's name, again to play it. See
+button menu and presses once to hear a song's name, then again to play it. See
 [Adding your own songs](#adding-your-own-songs) and
 [Custom name voices](#custom-name-voices-announce-then-confirm-menu).
 
 ## Layout
-- `boppo_chart/analysis.py` — onset/beat detection, spectral centroid, BPM (librosa).
-- `boppo_chart/lanes.py` — note placement (beat-synced or onset) + lane assignment.
-- `boppo_chart/difficulty.py` — easy/normal/hard pacing presets.
-- `boppo_chart/chart.py` — `Chart`/`Note` model + JSON (matches the handoff schema).
-- `boppo_chart/audio.py` — ffmpeg re-encode to device format (WAV; QOA if `qoaconv` present).
-- `boppo_chart/voice.py` — spoken song-name clips (macOS `say`, for the menu).
-- `boppo_chart/codegen.py` — songs → `songs_generated.rs` (`SONGS`) for the frontend.
-- `boppo_chart/pipeline.py` — ties analysis → assets → compiled activity together.
-- `boppo_chart/upload.py` — push `.wasm` + audio to a tablet over its HTTPS API.
-- `boppo_chart/cli.py` — `build`, `bundle`, `upload`, `launch` subcommands.
+- `boppo_chart/analysis.py`:  onset/beat detection, spectral centroid, BPM (librosa).
+- `boppo_chart/lanes.py`:  note placement (beat-synced or onset) + lane assignment.
+- `boppo_chart/difficulty.py`: easy/normal/hard pacing presets.
+- `boppo_chart/chart.py`: `Chart`/`Note` model + JSON (matches the handoff schema).
+- `boppo_chart/audio.py`: ffmpeg re-encode to device format (WAV; QOA if `qoaconv` present).
+- `boppo_chart/voice.py`: spoken song-name clips (macOS `say`, for the menu).
+- `boppo_chart/codegen.py`: songs → `songs_generated.rs` (`SONGS`) for the frontend.
+- `boppo_chart/pipeline.py`: ties analysis → assets → compiled activity together.
+- `boppo_chart/upload.py`: push `.wasm` + audio to a tablet over its HTTPS API.
+- `boppo_chart/cli.py`: `build`, `bundle`, `upload`, `launch` subcommands.
 
 The pure logic (`lanes`, `chart`, `codegen`) has no third-party deps, so its tests
 run without the audio stack.
@@ -59,7 +59,7 @@ One input works too. Options: `--difficulty easy|normal|hard` (default normal),
 `--cargo PATH`, `--upload SERIAL`, `--launch`.
 
 ### Difficulty
-`--difficulty` sets the pacing for young players — same notes on all 5 lanes,
+`--difficulty` sets the pacing for young players which is the same notes on all 5 lanes,
 just spaced out and more forgiving. It bundles three knobs:
 
 | Preset | min gap (density) | lead (preview) | window (forgiveness) |
@@ -76,7 +76,7 @@ rest still come from the preset. Slower, simpler songs also help a lot.
 
 ### Note placement (`--sync`)
 By default notes snap to the song's **beat grid** (`--sync beat`) so they track the
-music. `--sync onset` places them on raw transients instead — busier and can feel
+music. `--sync onset` places them on raw transients instead, busier and can feel
 off-beat; usually leave it on `beat`.
 
 ## Adding your own songs
@@ -95,7 +95,7 @@ below and for the on-device menu order.
 
 On the menu, the **first press** on a song speaks its name; a **second press**
 plays it. By default the name is synthesized with macOS `say` (spoken text = the
-song id). To use **your own recording — or an AI-generated voice clip** — map an
+song id). To use **your own recording or an AI-generated voice clip** then map an
 audio file to a song id with `--name-audio ID=PATH` (repeatable; any audio format,
 re-encoded to device format automatically):
 ```bash
@@ -109,7 +109,7 @@ re-encoded to device format automatically):
 - Not sure of an id? Run `build` once and look at the filenames in
   `dist/<name>/charts/` (e.g. `golden.chart.json` → id `golden`).
 - Clips are re-encoded to 16-bit/48 kHz/mono like songs, so AI-generated mp3/wav
-  files work directly — no manual conversion needed.
+  files work directly and no manual conversion needed.
 
 ### Charts only (no compile)
 ```bash
@@ -136,7 +136,7 @@ wasm. `bundle` automates this without touching the frontend source tree:
    (otherwise `SONGS` is the built-in `SAMPLE_SONGS`).
 3. It copies the resulting `rhythm_game.wasm` into `dist/<name>/`.
 
-This is the "upload songs = compile an activity" step — still a full Rust build
+This is the "upload songs = compile an activity" step. Still a full Rust build
 per bundle (~2.5s here), but now a single command. (The `serde_json` crate is
 available on-device, so a future alternative is `include_str!` + runtime parse to
 avoid recompiling; not done yet.)
@@ -153,7 +153,7 @@ Pairs first (approve on the device), then pushes the wasm and every song under
 the same LAN.
 
 ## Launching on the device
-User activities do **not** take one of the built-in arcade menu slots — you start
+User activities do **not** take one of the built-in arcade menu slots. you start
 them by name via the always-available `start` command (no Developer Mode):
 ```bash
 .venv/bin/python -m boppo_chart launch <SERIAL>            # starts rhythm_game
